@@ -2,10 +2,10 @@ import itertools
 
 alphabet = ""
 
-
 symbols = {'~': 0, 's': 33, 'u': 26, 'l': 26, 'd': 10}
 
-policy = {'u': {'min': 0, 'max':0}, 'l': {'min': 0, 'max':2}, 'd': {'min': 1, 'max':6}, 's': {'min': 0}}
+policy = {'u': {'min': 0, 'max': 0}, 'l': {'min': 0, 'max': 2},
+          'd': {'min': 1, 'max': 6}, 's': {'min': 0}}
 ALL_CHARS = 95
 MAX = 1000
 
@@ -19,7 +19,7 @@ def scan_policy():
             alphabet += sym
     if other_symbol_chars > 0:
         alphabet += "~"
-        symbols['~']=other_symbol_chars
+        symbols['~'] = other_symbol_chars
     print("symbols", alphabet)
     print("other symbol", other_symbol_chars)
 
@@ -39,7 +39,7 @@ def check_conf(data):
             expected_max = cond['max']
 
         counted = count[key]
-        if counted < expected_min or counted>expected_max:
+        if counted < expected_min or counted > expected_max:
             return False
     return True
 
@@ -51,19 +51,22 @@ def calc_number(cand):
     return mul
 
 
-scan_policy()
-pass_len = 8
-all = list(itertools.product(list(alphabet), repeat=pass_len))
+def main():
+    scan_policy()
+    pass_len = 8
+    all = list(itertools.product(list(alphabet), repeat=pass_len))
 
-counter = 0
-repeats = 0
-for cand in all:
-    res = check_conf(cand)
-    if res:
-        # print(cand)
-        repeats += calc_number(cand)
-        counter += 1
-print("masks:", counter)
-print()
-print(repeats)
-print(repeats/pow(95, pass_len))
+    counter = 0
+    repeats = 0
+    for cand in all:
+        res = check_conf(cand)
+        if res:
+            # print(cand)
+            repeats += calc_number(cand)
+            counter += 1
+    print("masks:", counter)
+    print()
+    print(repeats)
+    print(repeats/pow(ALL_CHARS, pass_len))
+
+main()

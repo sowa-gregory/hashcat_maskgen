@@ -1,0 +1,37 @@
+sp = 33
+let = 26*2 = 52
+dig = 10
+
+sum = 95
+pow(95,8)
+
+
+10 * 95^7
+*8
+
+------
+1 cyfra
+1 mala litera
+
+10 * 26 * pow(95,6) * 56
+
+
+cyfra
+mala * 2
+
+10 * 26 * 26 
+
+2 cyfry
+1 0
+
+
+na pewno jedna mala litera
+1-3 małych liter
+1-3 duzych liter
+cyfra
+znak specjalny
+
+
+26 * pow (95,7)
+
+

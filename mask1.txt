@@ -1,0 +1,20 @@
+
+
+
+sp = 33
+let = 26*2 = 52
+dig = 10
+
+sum = 95
+pow(95,8)
+
+
+10 * 95^7
+*8
+
+
+dwie cyfry kolo siebie
+dwie litery kolo siebie
+
+
+dwie litery kolo siebie i jedna cyfra

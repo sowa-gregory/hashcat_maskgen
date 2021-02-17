@@ -1,45 +1,30 @@
-import itertools
+'''
+The complete alphabet is always used. The reason is to always generate masks containing all alphabet
+symbols, which allows for incremental masks usage.
+Example:
+If cracking password with masks assuming at least three digits fails, new differential masks can
+be generated for passwords with at least two digits substracting previous masks sets.
+'''
+from itertools import product
 
-alphabet = ""
+# possible chars in each symbol
+ALPHABET = "suld"
+SYMBOLS = {'s': 33, 'u': 26, 'l': 26, 'd': 10}
 
-symbols = {'~': 0, 's': 33, 'u': 26, 'l': 26, 'd': 10}
-
-policy = {'u': {'min': 0, 'max': 0}, 'l': {'min': 0, 'max': 2},
-          'd': {'min': 1, 'max': 6}, 's': {'min': 0}}
 ALL_CHARS = 95
 MAX = 1000
 
-# detect used symbols - calculate value of 'other' symbol
-def scan_policy():
-    global alphabet
-    other_symbol_chars = ALL_CHARS
-    for sym in policy:
-        if policy[sym]['min'] > 0 or ('max' in policy[sym] and policy[sym]['max'] > 0):
-            other_symbol_chars -= symbols[sym]
-            alphabet += sym
-    if other_symbol_chars > 0:
-        alphabet += "~"
-        symbols['~'] = other_symbol_chars
-    print("symbols", alphabet)
-    print("other symbol", other_symbol_chars)
+def filter_mask(policy:dict, mask: list):
+    symbol_counter = dict.fromkeys(policy, 0)
+    for symbol in mask:
+        symbol_counter[symbol] += 1
 
-
-def check_conf(data):
-    count = dict.fromkeys(policy, 0)
-    for d in data:
-        if d != '~':
-            count[d] += 1
-    for key in count:
-        cond = policy[key]
-        expected_min = 0
-        expected_max = MAX
-        if 'min' in cond:
-            expected_min = cond['min']
-        if 'max' in cond:
-            expected_max = cond['max']
-
-        counted = count[key]
-        if counted < expected_min or counted > expected_max:
+    for symbol in symbol_counter:
+        cond = policy[symbol]
+        exp_min = cond.get('min', 0)
+        exp_max = cond.get('max', MAX)
+        counted = symbol_counter[symbol]
+        if counted < exp_min or counted > exp_max:
             return False
     return True
 
@@ -47,26 +32,30 @@ def check_conf(data):
 def calc_number(cand):
     mul = 1
     for symbol in cand:
-        mul *= symbols[symbol]
+        mul *= SYMBOLS[symbol]
     return mul
 
 
 def main():
-    scan_policy()
-    pass_len = 8
-    all = list(itertools.product(list(alphabet), repeat=pass_len))
+    policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 0, 'max': 8},
+            'd': {'min': 0, 'max': 8}, 's': {'min': 0, 'max': 8}}
 
-    counter = 0
-    repeats = 0
-    for cand in all:
-        res = check_conf(cand)
-        if res:
-            # print(cand)
-            repeats += calc_number(cand)
-            counter += 1
+    pass_len = 8
+    all_masks = product(list(ALPHABET), repeat=pass_len)
+
+    cnt = reps = 0
+
+    # filter masks
+    fit_masks = [mask for mask in all_masks if filter_mask(policy, mask)]
+
+    for mask in fit_masks:
+        repeats += calc_number(cand)
+        counter += 1
+
     print("masks:", counter)
     print()
     print(repeats)
     print(repeats/pow(ALL_CHARS, pass_len))
+
 
 main()

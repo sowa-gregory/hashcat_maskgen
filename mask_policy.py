@@ -8,7 +8,7 @@ be generated for passwords with at least two digits substracting previous masks 
 from itertools import product
 
 # possible chars in each symbol
-ALPHABET = "suld"
+ALPHABET = "slud"
 SYMBOLS = {'s': 33, 'u': 26, 'l': 26, 'd': 10}
 
 ALL_CHARS = 95
@@ -80,6 +80,9 @@ def gen_incremental_set(pass_len, policy1, policy2, file_name):
 def test1():
     policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 3, 'max': 8},
                'd': {'min': 1, 'max': 4}, 's': {'min': 0, 'max': 2}}
+    #policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 0, 'max': 8},
+     #          'd': {'min': 0, 'max': 8}, 's': {'min': 0, 'max': 8}}
+
     pass_len = 8
     gen_single_set(pass_len,policy, "out1")
 
@@ -99,3 +102,5 @@ def test3():
     gen_incremental_set(pass_len, policy1, policy2, "out2")
 
 test1()
+test2()
+test3()

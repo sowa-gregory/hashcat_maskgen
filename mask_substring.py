@@ -2,40 +2,61 @@
 Script to generate masks which contains specific characters
 '''
 
+FULL_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
-class GenChar:
-    def __init__(self):
-        pass
 
-    def generate(self, pass_len, substr) -> list:
-        self.pass_len = pass_len
-        self.substr = substr
-        self.mask = [-1]*pass_len
-        self.gen_masks = set()
-        self.__gen_char(0)
-        return self.gen_masks
+def generate_masks(pass_len, substr) -> list:
+    current_mask = [-1]*pass_len
+    masks = []
 
-    def mask_conv(self, mask):
-        mask_str = ""
-        for x in mask:
-            if x == -1:
-                mask_str += "?a"
-            else:
-                mask_str += self.substr[x]
-        return mask_str
-
-    def __gen_char(self, char_num):
-        if char_num == len(self.substr):
-            self.gen_masks.add(self.mask_conv(self.mask))
+    def gen_char(char_num):
+        if char_num == len(substr):
+            masks.append(current_mask.copy())
             return
 
-        for i in range(self.pass_len):
-            if(self.mask[i] == -1):
-                self.mask[i] = char_num
-                self.__gen_char(char_num+1)
-                self.mask[i] = -1
+        for i in range(pass_len):
+            if current_mask[i] == -1:
+                current_mask[i] = char_num
+                gen_char(char_num+1)
+                current_mask[i] = -1
+    gen_char(0)
+    return masks
 
 
-out = (GenChar().generate(8, "12"))
-for mask in out:
-    print(mask)
+def mask_convert(mask: list, substr: str) -> str:
+    mask_str = ""
+    for val in mask:
+        if val == -1:
+            mask_str += "\\1"
+        else:
+            mask_str += substr[val]
+    return mask_str
+
+
+def get_iterations(masks: list, neg_alphabet_len: int) -> int:
+    iters = 1
+    for mask in masks:
+        mask_iters = 1
+        for val in mask:
+            if val == -1:
+                mask_iters *= neg_alphabet_len
+        iters+=mask_iters
+    return iters
+
+
+def generate(pass_len: int, substr: str):
+    alphabet_negation = "".join(
+        [char for char in FULL_ALPHABET if not char in substr])
+
+    masks = generate_masks(pass_len, substr)
+    iters = get_iterations(masks, len(alphabet_negation))
+    print("Generated masks:", len(masks))
+    print("% iterations:", iters/pow(len(FULL_ALPHABET), pass_len)*100)
+
+    out_masks = [mask_convert(mask, substr) for mask in masks]
+
+    #for mask in out_masks:
+     #   print(mask)
+
+
+generate(8, "4")

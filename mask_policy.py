@@ -63,7 +63,6 @@ def print_info(pass_len, masks):
     print("total iterations:", iters)
     print("number of masks:", len(masks))
     print("% of total set", iters/pow(ALL_CHARS, pass_len)*100)
-    print("estimated time hours:", iters/1420000000/3600)
 
 def gen_single_set(pass_len, policy, file_name):
     masks = gen_masks(pass_len, policy)
@@ -79,7 +78,7 @@ def gen_incremental_set(pass_len, policy1, policy2, file_name):
 
 def test1():
     policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 3, 'max': 8},
-               'd': {'min': 1, 'max': 4}, 's': {'min': 0, 'max': 2}}
+               'd': {'min': 1, 'max': 8}, 's': {'min': 0, 'max': 8}}
     #policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 0, 'max': 8},
      #          'd': {'min': 0, 'max': 8}, 's': {'min': 0, 'max': 8}}
 
@@ -102,5 +101,5 @@ def test3():
     gen_incremental_set(pass_len, policy1, policy2, "out2")
 
 test1()
-test2()
-test3()
+#test2()
+#test3()

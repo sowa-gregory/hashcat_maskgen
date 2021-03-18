@@ -66,9 +66,7 @@ def generate(file_name:str, pass_len: int, substr: str):
     #alphabet_negation = alphabet_negation.replace(DIGITS, "?d")
     #alphabet_negation = alphabet_negation.replace(SPECIAL, "?s")
     
-    
-    
-    
+        
     alphabet_negation = alphabet_negation.replace(",", "\,")
     alphabet_negation = alphabet_negation.replace("?", "??")
     
@@ -82,4 +80,4 @@ def generate(file_name:str, pass_len: int, substr: str):
 
     write_masks(file_name, alphabet_negation, out_masks)
 
-generate("mask1", 8, "11")
+generate("substring.mask", 6, "12")

@@ -77,12 +77,12 @@ def gen_incremental_set(pass_len, policy1, policy2, file_name):
     save_masks(file_name, out_masks)
 
 def test1():
-    policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 3, 'max': 8},
-               'd': {'min': 1, 'max': 8}, 's': {'min': 0, 'max': 8}}
+    policy = {'u': {'min': 1, 'max': 5}, 'l': {'min': 3, 'max': 8},
+               'd': {'min': 1, 'max': 2}, 's': {'min': 1, 'max': 1}}
     #policy = {'u': {'min': 0, 'max': 8}, 'l': {'min': 0, 'max': 8},
      #          'd': {'min': 0, 'max': 8}, 's': {'min': 0, 'max': 8}}
 
-    pass_len = 8
+    pass_len = 6
     gen_single_set(pass_len,policy, "out1")
 
 def test2():
